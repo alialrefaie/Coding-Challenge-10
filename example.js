@@ -1,13 +1,13 @@
-document.addEventListener("DOMContentLoaded", function() {
-    const ul = document.getElementById('orders');
-
-    d3.csv("purchase_orders.csv").then(data => {
-        data.forEach(order => {
-            const li = document.createElement("li");
-            li.textContent = `${order.customerName} - ${order.orderId}: $${order.purchaseAmount}`;
-            ul.appendChild(li);
-        });
-    }).catch(error => {
-        console.error('Error loading the CSV file:', error);
+d3.dsv(",", "data/purchase_orders.csv", function(d) {
+    return {
+        customerName: d.customerName,
+        orderId: d.orderId,
+        purchaseAmount: d.purchaseAmount
+    };
+}).then(function(data) {
+    var ul = d3.select("#orders");
+    data.forEach(function(d) {
+        ul.append("li")
+        .text (d.customerName + " - Order ID: " + d.orderId + ": Purchase Amount: " + d.purchaseAmount);
     });
 });
